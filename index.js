@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";//permite comunicacion en tiempo real (websocket)
 import path from "path";
 import { fileURLToPath } from "url";
+import passport from "passport";
+import { initializePassport } from "./managers/passport.js";
 
 // Routers
 
@@ -19,18 +21,22 @@ import productsRouter, { injectSocket } from "./routes/products.router.js";
 //API Rest de carritos
 import cartsRouter from "./routes/carts.router.js";
 
+// 🔥 Router de sesiones
+import sessionsRouter from "./routes/sessions.router.js";
+
 // Instancia compartida 
 import { productManager } from "./managers/productManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 //Creacion de app y puerto
 const app = express();
 const PORT = 8080;
 const MONGO_URL = process.env.MONGO_URL;
 
+initializePassport();
+app.use(passport.initialize());
 
 // Middlewares. Permiten recibir json en body y formularios
 app.use(express.json());
@@ -48,6 +54,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/", viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/sessions", sessionsRouter); // 👈 ESTA ES LA NUEVA
 
 // Inicio de servidor + conexión a MongoDB
 const startServer = async () => {

@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "title": "Pantalón técnico",
+    "description": "Pantalón para nieve",
+    "code": "P-001",
+    "price": 1800,
+    "status": true,
+    "stock": 99,
+    "category": "Indumentaria",
+    "thumbnails": [
+      "pantalon1.jpg",
+      "pantalon2.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Remera técnica",
+    "description": "Remera para running",
+    "code": "RM-002",
+    "price": 18000,
+    "status": true,
+    "stock": 20,
+    "category": "Indumentaria",
+    "thumbnails": [
+      "remera1.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Zapatillas de entrenamiento",
+    "description": "Zapatillas para gimnasio",
+    "code": "ZP-003",
+    "price": 125000,
+    "status": true,
+    "stock": 10,
+    "category": "Calzado",
+    "thumbnails": [
+      "zapatilla1.jpg",
+      "zapatilla2.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Short deportivo",
+    "description": "Short cómodo para entrenar",
+    "code": "SH-001",
+    "price": 12000,
+    "status": true,
+    "stock": 15,
+    "category": "Indumentaria",
+    "thumbnails": [
+      "short1.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Short deportivo",
+    "description": "Short cómodo para entrenar",
+    "code": "SH-001",
+    "price": 12000,
+    "status": true,
+    "stock": 15,
+    "category": "Indumentaria",
+    "thumbnails": []
+  },
+  {
+    "id": 6,
+    "title": "Coca Cola",
+    "description": "Gaseosa sabor cola",
+    "code": "A123",
+    "price": 800,
+    "status": true,
+    "stock": 30,
+    "category": "Bebidas",
+    "thumbnails": []
+  }
+]

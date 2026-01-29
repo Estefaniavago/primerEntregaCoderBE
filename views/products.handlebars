@@ -1,0 +1,50 @@
+<div class="container">
+    <h1>Productos</h1>
+
+    {{#if products.length}}
+        <div class="products-grid">
+            {{#each products}}
+                <div class="card">
+                    <h2>{{title}}</h2>
+                    <p>{{description}}</p>
+                    <p><strong>${{price}}</strong></p>
+                    <p>Categoría: {{category}}</p>
+                    <p>Stock: {{stock}}</p>
+
+                    <div class="actions">
+                        <a class="btn" href="/products/{{id}}">Ver detalle</a>
+                        <button class="btn add-to-cart" data-product="{{id}}">Agregar al carrito</button>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+
+        <div class="pagination">
+            {{#if pagination.hasPrevPage}}
+                <a class="btn" href="{{pagination.prevLink}}">Anterior</a>
+            {{/if}}
+            <span>Página {{pagination.page}} de {{pagination.totalPages}}</span>
+            {{#if pagination.hasNextPage}}
+                <a class="btn" href="{{pagination.nextLink}}">Siguiente</a>
+            {{/if}}
+        </div>
+    {{else}}
+        <p>No hay productos cargados aún</p>
+    {{/if}}
+</div>
+
+<script>
+document.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const pid = btn.dataset.product;
+        const cid = prompt("Ingresa el ID del carrito:");
+        if (!cid) return;
+        const res = await fetch(`/api/carts/${cid}/product/${pid}`, { method: "POST" });
+        if (res.ok) {
+            alert("Producto agregado al carrito");
+        } else {
+            alert("No se pudo agregar. Verifica el carrito y el producto.");
+        }
+    });
+});
+</script>

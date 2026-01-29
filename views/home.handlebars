@@ -1,0 +1,32 @@
+<div class="container">
+    <h1 class="title">Lista de Productos</h1>
+
+    {{#if products.length}}
+        <div class="products-grid">
+            {{#each products}}
+                <div class="card">
+
+                    {{!-- Imagen --}}
+                    {{#if thumbnails.[0]}}
+                        <img src="{{thumbnails.[0]}}" class="card-img" alt="{{title}}">
+                    {{else}}
+                        <img src="/img/no-image.png" class="card-img" alt="Sin imagen">
+                    {{/if}}
+
+                    <h2 class="card-title">{{title}}</h2>
+
+                    <p class="card-description">{{description}}</p>
+
+                    <div class="card-info">
+                        <span> ${{price}}</span>
+                        <span> {{stock}} unidades</span>
+                        <span> {{category}}</span>
+                    </div>
+                    <a class="btn" href="/products/{{id}}">Ver detalle</a>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p class="empty">No hay productos cargados aún.</p>
+    {{/if}}
+</div>

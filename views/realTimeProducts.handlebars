@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Productos en Tiempo Real</h1>
+
+    <h2>Lista actual</h2>
+    <div id="product-container">
+        <!-- Socket.IO renderiza los productos acá -->
+    </div>
+
+    <hr>
+
+    <h2>Agregar producto</h2>
+    <form id="add-form" autocomplete="off">
+        <input type="text" name="title" placeholder="Título" required>
+        <input type="text" name="description" placeholder="Descripción" required>
+        <input type="text" name="code" placeholder="Código" required>
+        <input type="number" name="price" placeholder="Precio" required>
+        <input type="number" name="stock" placeholder="Stock" required>
+        <input type="text" name="category" placeholder="Categoría" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <hr>
+
+    <h2>Eliminar producto</h2>
+    <form id="delete-form" autocomplete="off">
+    <input type="text" name="id" placeholder="ID del producto (MongoDB)" required>
+        <button type="submit">Eliminar</button>
+    </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>

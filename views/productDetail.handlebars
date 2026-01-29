@@ -1,0 +1,35 @@
+<div class="container">
+    {{#if error}}
+        <p>{{error}}</p>
+    {{else}}
+        <h1>{{product.title}}</h1>
+        <p>{{product.description}}</p>
+        <p><strong>Precio:</strong> ${{product.price}}</p>
+        <p><strong>Categoría:</strong> {{product.category}}</p>
+        <p><strong>Stock:</strong> {{product.stock}}</p>
+        <p><strong>Estado:</strong> {{#if product.status}}Disponible{{else}}No disponible{{/if}}</p>
+
+        <div class="actions">
+            <button id="add-to-cart" class="btn" data-product="{{product.id}}">Agregar al carrito</button>
+            <a class="btn" href="/products">Volver</a>
+        </div>
+    {{/if}}
+</div>
+
+<script>
+const btn = document.getElementById("add-to-cart");
+if (btn) {
+    btn.addEventListener("click", async () => {
+        const pid = btn.dataset.product;
+        const cid = prompt("Ingresa el ID del carrito:");
+        if (!cid) return;
+        const res = await fetch(`/api/carts/${cid}/product/${pid}`, { method: "POST" });
+        if (res.ok) {
+            alert("Producto agregado al carrito");
+        } else {
+            alert("No se pudo agregar. Verifica el carrito y el producto.");
+        }
+    });
+}
+</script>
+

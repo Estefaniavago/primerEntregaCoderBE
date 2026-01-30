@@ -1,5 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+dotenv.config()
 
 import { register, login } from "../managers/sessions.manager.js"
 
@@ -16,19 +19,10 @@ router.post(
 // /api/sessions/current
 router.get(
   "/current",
-  passport.authenticate("current", { session: false }),
-  (req, res) => {
-    res.json({
-      status: "success",
-      user: req.user
-    });
-  }
-);
-router.get(
-  "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
+      status: "success",
       user: {
         id: req.user._id,
         first_name: req.user.first_name,
@@ -40,5 +34,18 @@ router.get(
     });
   }
 );
+
+
+router.get("/current-debug", (req, res) => {
+  try {
+    const auth = req.headers.authorization;
+    const token = auth?.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    res.json({ decoded });
+  } catch (e) {
+    res.status(401).json({ error: e.message });
+  }
+});
 
 export default router;

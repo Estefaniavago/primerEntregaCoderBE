@@ -1,6 +1,10 @@
 import UserModel from "../models/user.model.js";
-import jwt from "jsonwebtoken";
-import { createHash, isValidPassword } from "./bcrypt.js";
+import { createHash } from "./bcrypt.js";
+import { CartModel } from "../models/cart.model.js";
+import jwt from "jsonwebtoken"
+import { isValidPassword } from "./bcrypt.js"
+
+
 
 // ======================
 // REGISTER
@@ -18,20 +22,28 @@ export const register = async (req, res) => {
       return res.status(400).json({ error: "El usuario ya existe" });
     }
 
+    //  Crear carrito vacío
+    const newCart = await CartModel.create({ products: [] });
+
     const newUser = {
       first_name,
       last_name,
       email,
       age,
       password: createHash(password),
-      role: "user"
+      role: "user",
+      cart: newCart._id // 🔗 Referencia al carrito
     };
 
     const result = await UserModel.create(newUser);
 
     res.status(201).json({
-      message: "Usuario creado",
-      user: result
+      message: "Usuario creado con carrito",
+      user: {
+        id: result._id,
+        email: result.email,
+        cart: result.cart
+      }
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -41,30 +53,22 @@ export const register = async (req, res) => {
 // ======================
 // LOGIN
 // ======================
-
 export const login = async (req, res) => {
-  console.log("BODY:", req.body);
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Email y contraseña requeridos" });
+      return res.status(400).json({ error: "Email y contraseña requeridos" })
     }
 
-    const user = await UserModel.findOne({ email });
-    console.log("USER DB:", user);
+    const user = await UserModel.findOne({ email })
     if (!user) {
-      return res.status(401).json({ error: "Usuario no encontrado" });
+      return res.status(401).json({ error: "Usuario no encontrado" })
     }
 
-    // DEBUG 
-    console.log("PASSWORD BODY:", password);
-    console.log("PASSWORD DB:", user.password);
-console.log("CHECK TYPES:", typeof password, typeof user.password);
-
-    const validPassword = isValidPassword(password, user.password);
+    const validPassword = isValidPassword(password, user.password)
     if (!validPassword) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+      return res.status(401).json({ error: "Contraseña incorrecta" })
     }
 
     const token = jwt.sign(
@@ -75,13 +79,13 @@ console.log("CHECK TYPES:", typeof password, typeof user.password);
       },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
-    );
+    )
 
     res.json({
       message: "Login exitoso",
       token
-    });
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message })
   }
-};
+}

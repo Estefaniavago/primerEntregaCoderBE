@@ -13,8 +13,34 @@ router.post("/register", register);
 router.post(
   "/login",
   passport.authenticate("login", { session: false }),
-  login
+  (req, res) => {
+    const user = req.user;
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        role: user.role
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // COOKIE SEGURA 
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false, // true si usás HTTPS
+      maxAge: 60 * 60 * 1000
+    });
+
+    res.json({
+      status: "success",
+      message: "Login exitoso",
+      token
+    });
+  }
 );
+
 
 // /api/sessions/current
 router.get(
@@ -36,16 +62,5 @@ router.get(
 );
 
 
-router.get("/current-debug", (req, res) => {
-  try {
-    const auth = req.headers.authorization;
-    const token = auth?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-    res.json({ decoded });
-  } catch (e) {
-    res.status(401).json({ error: e.message });
-  }
-});
 
 export default router;
